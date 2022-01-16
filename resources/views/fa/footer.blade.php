@@ -71,8 +71,8 @@
 													<a style="" href="{{ url('tags/316/جامعه شناسی') }}" class="first"> <span style="color: #186975;padding-left: 2px; border-left:2px solid #006478" >جامعه شناسی</span></a>
 													<a style="" href="{{ url('tags/148/هنر') }}" class="first"> <span style="color: #186975;padding-left: 2px; border-left:2px solid #006478" >هنر</span></a>
 													<a style="" href="{{ url('tags/123/زندگی نامه') }}" class="first"> <span style="color: #186975;padding-left: 2px; border-left:2px solid #006478" >زندگی نامه</span></a>
-													<a style="" href="{{ url('tags/125/مرجع') }}" class="first"> <span style="color: #186975;padding-left: 2px; border-left:2px solid #006478" >مرجع</span></a>
-													<a style="" href="{{ url('tags/81/کتابشناسی') }}" class="first"> <span style="color: #186975;padding-left: 2px; border-left:2px solid #006478" >کتابشناسی</span></a>
+													<!-- <a style="" href="{{ url('tags/125/مرجع') }}" class="first"> <span style="color: #186975;padding-left: 2px; border-left:2px solid #006478" >مرجع</span></a> -->
+													<!-- <a style="" href="{{ url('tags/81/کتابشناسی') }}" class="first"> <span style="color: #186975;padding-left: 2px; border-left:2px solid #006478" >کتابشناسی</span></a> -->
 													<a style="" href="{{ url('tags/140/نقد') }}" class="first"> <span style="color: #186975;padding-left: 2px; border-left:2px solid #006478" >نقد</span></a>
 												
 												

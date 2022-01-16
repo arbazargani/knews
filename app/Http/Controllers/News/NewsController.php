@@ -96,5 +96,4 @@ class NewsController extends Controller
     {
         dd($request->id);
     }
-
 }

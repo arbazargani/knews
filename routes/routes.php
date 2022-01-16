@@ -17,6 +17,7 @@ Route::get('rand', function() {
     return $random_data[0];
 });
 
+Route::get('json/{page}', ['uses' => 'HomeController@jsonLoadMore', 'as' => 'json']);
 
 
 Route::get('images{image}{type}{width}x{height}.{ext}', ['uses' => 'FileController@create'])->where(['image' => '(/[a-zA-Z0-9_\-\.]+)+', 'type' => '_|-', 'width' => '[0-9]+', 'height' => '[0-9]+', 'ext' => 'jpe?g|png|gif|JPG']);

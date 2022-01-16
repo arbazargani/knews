@@ -225,8 +225,20 @@
                 <div class="inner ">
 
                     <div id="" class="row">
-
-                        <div id="" class="newsContainer newsListWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <style>
+                            /* #load_more {
+                                height: 2242px;
+                                overflow-y: scroll;
+                                scrollbar-width: none; /* Firefox */
+                                -ms-overflow-style: none;  /* Internet Explorer 10+ */
+                            }
+                            #load_more::-webkit-scrollbar { /* WebKit */
+                                width: 0;
+                                height: 0;
+                            } */
+                        </style>
+                        <div id="load_more"
+                            class="newsContainer newsListWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
                             @include('fa.partial.one_news' , ['data'=> $news_titr2[0] ])
                             @include('fa.partial.one_news' , ['data'=> $news_titr2[1] ])
@@ -234,12 +246,12 @@
                             @include('fa.partial.one_news' , ['data'=> $news_titr2[3] ])
                             @include('fa.partial.one_news' , ['data'=> $news_titr2[4] ])
                             @include('fa.partial.one_news' , ['data'=> $news_titr2[5] ])
-
+                            <div id="results"></div>
+                            <div class="ajax-loading">در حال بارگزاری ...</div>
                         </div>
-
                     </div>
-
                 </div>
+                <div id="loader" class="loader"></div>
             </div>
             <div id="ctl00_cphBeforeMiddleRight_pnl21cphBeforeMiddleRight_137"
                  class="col-cms col-lg-6 col-md-6 customNewsList titleCount">
@@ -273,5 +285,4 @@
             </div>
         </div>
     </div>
-
 @endsection

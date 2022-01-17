@@ -15,7 +15,7 @@ class TagController extends Controller
     {
         $tags = Tag::orderBy('order', 'desc')->orderBy('title', 'asc')->orderBy('id', 'desc')
             ->get();
-            #->paginate(120);
+        #->paginate(120);
         return view(\App::getLocale() . '.tags_list', compact('tags'));
     }
 
@@ -30,11 +30,12 @@ class TagController extends Controller
             $news_titr3 = $tag->news()->where('status', 'active')->where('type', 'titr3')->where('news.created_at', '<=', $nowdate)->where('lang', \App::getLocale())->orderBy('created_at', 'desc')->take(50)->get();
         else
             $news_titr3 = $tag->news()->where('status', 'active')->where('type', 'titr3')->where('news.created_at', '<=', $nowdate)->where('lang', \App::getLocale())->orderBy('created_at', 'desc')->get();
-        
+
         return view(\App::getLocale() . '.home_tag', compact('tag', 'news_titr1', 'news_titr2', 'news_titr3'));
     }
 
-    public function jsonLoadMore($id, $page) {
+    public function jsonLoadMore($id, $page)
+    {
         // if (date('s')%2 == 0) {
         //     return;
         // }
@@ -42,22 +43,22 @@ class TagController extends Controller
         $page = ($page == 0) ? 1 : $page;
         $nowdate = Carbon::now()->toDateTimeString();
         $news_titr2 = $tag->news()->where('status', 'active')
-        ->where('type', 'titr2')
-        ->where('news.created_at', '<=', $nowdate)
-        ->where('lang', \App::getLocale())
-        ->orderBy('created_at', 'desc')
-        ->skip(6*$page)
-        ->take(6)
-        ->get();
+            ->where('type', 'titr2')
+            ->where('news.created_at', '<=', $nowdate)
+            ->where('lang', \App::getLocale())
+            ->orderBy('created_at', 'desc')
+            ->skip(6 * $page)
+            ->take(6)
+            ->get();
         $row = [
             "content" => '',
             "next" => ''
         ];
-        foreach($news_titr2 as $data) {
+        foreach ($news_titr2 as $data) {
             $title = $data->title;
             $slug = $this->str_slug_fa($data->title);
-            $img_src = $this->image_url($data->image_url , 235,100 ,true);
-            $href = route('news.show', [$data->id , $slug]);
+            $img_src = $this->image_url($data->image_url, 235, 100, true);
+            $href = route('news.show', [$data->id, $slug]);
             $desc = $data->descr;
 
             $row['content'] .= "
@@ -94,7 +95,7 @@ class TagController extends Controller
                     </div>
                 </div>
                 ";
-                $row['next'] = $page+1;
+            $row['next'] = $page + 1;
         }
         // return response()->json($row);
         echo $row['content'];
@@ -104,13 +105,13 @@ class TagController extends Controller
     {
         // Convert all dashes/underscores into separator
         $flip = $separator == '-' ? '_' : '-';
-        $title = preg_replace('!['.preg_quote($flip).']+!u', $separator, $title);
+        $title = preg_replace('![' . preg_quote($flip) . ']+!u', $separator, $title);
 
         // Remove all characters that are not the separator, letters, numbers, or whitespace.
-        $title = preg_replace('![^'.preg_quote($separator).'\pL\pN\s]+!u', '', mb_strtolower($title));
+        $title = preg_replace('![^' . preg_quote($separator) . '\pL\pN\s]+!u', '', mb_strtolower($title));
 
         // Replace all separator characters and whitespace by a single separator
-        $title = preg_replace('!['.preg_quote($separator).'\s]+!u', $separator, $title);
+        $title = preg_replace('![' . preg_quote($separator) . '\s]+!u', $separator, $title);
 
         return trim($title, $separator);
     }
@@ -120,8 +121,7 @@ class TagController extends Controller
     {
         $info = pathinfo($file);#dd($info);
 
-        if (count($info) == 4)
-        {
+        if (count($info) == 4) {
             if (substr($info['dirname'], 0, 6) == 'files/') {
                 $info['dirname'] = substr($info['dirname'], 6);
             }

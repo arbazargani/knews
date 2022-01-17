@@ -24,22 +24,22 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-    	if ($request->path() == 'fa') {
-        	return redirect('/');
+        if ($request->path() == 'fa') {
+            return redirect('/');
         }
         $nowdate = Carbon::now()->toDateTimeString();
-        $news_titr1 = News::where('status', 'active')->where('type', 'titr1')->where('created_at', '<=' , $nowdate )->where('lang', \App::getLocale())->orderBy('created_at', 'desc')->take(3)->get();
+        $news_titr1 = News::where('status', 'active')->where('type', 'titr1')->where('created_at', '<=', $nowdate)->where('lang', \App::getLocale())->orderBy('created_at', 'desc')->take(3)->get();
         // $news_titr2 = News::where('status', 'active')->where('type', 'titr2')->where('created_at', '<=' , $nowdate )->where('lang', \App::getLocale())->orderBy('created_at', 'desc')->take(8)->get();
-        $news_titr2 = News::where('status', 'active')->where('type', 'titr2')->where('created_at', '<=' , $nowdate )->where('lang', \App::getLocale())->orderBy('created_at', 'desc')->take(13)->get();
-        $news_titr3 = News::where('status', 'active')->where('type', 'titr3')->where('created_at', '<=' , $nowdate )->where('lang', \App::getLocale())->orderBy('created_at', 'desc')->take(60)->get();
-        
+        $news_titr2 = News::where('status', 'active')->where('type', 'titr2')->where('created_at', '<=', $nowdate)->where('lang', \App::getLocale())->orderBy('created_at', 'desc')->take(13)->get();
+        $news_titr3 = News::where('status', 'active')->where('type', 'titr3')->where('created_at', '<=', $nowdate)->where('lang', \App::getLocale())->orderBy('created_at', 'desc')->take(60)->get();
+
         $random_news = \App\News::where('created_at', 'like', '%2018%')
-        ->where('status', 'active')
-        ->where('type', 'titr2')
-        ->where('lang', \App::getLocale())
-        ->inRandomOrder()
-        ->limit(5)->get();
-        return view(\App::getLocale() . '.home',compact('news_titr1','news_titr2','news_titr3', 'random_news'));
+            ->where('status', 'active')
+            ->where('type', 'titr2')
+            ->where('lang', \App::getLocale())
+            ->inRandomOrder()
+            ->limit(5)->get();
+        return view(\App::getLocale() . '.home', compact('news_titr1', 'news_titr2', 'news_titr3', 'random_news'));
     }
 
     public function aboutus()
@@ -56,7 +56,7 @@ class HomeController extends Controller
 
     public function newsletter_store(Request $request)
     {
-        if( Newsletter::where('email',$request->tm_newsletter_email)->count() == 0 ){
+        if (Newsletter::where('email', $request->tm_newsletter_email)->count() == 0) {
 
             $nl = new Newsletter;
             $nl->email = $request->tm_newsletter_email;
@@ -69,7 +69,7 @@ class HomeController extends Controller
 
         return [
             'ok' => false,
-            'msg'=>trans('custom.old_successfully_subscribed')
+            'msg' => trans('custom.old_successfully_subscribed')
         ];
 
     }
@@ -101,12 +101,12 @@ class HomeController extends Controller
         $aboutus->descr = '';
         $aboutus->ip = $request->ip();
         $aboutus->fulltext = $request->text;
-        $aboutus->department = 'support' ;#$request->department;
+        $aboutus->department = 'support';#$request->department;
         $aboutus->type = 'contact';
         $aboutus->lang = \App::getLocale();
         if ($aboutus->save()) {
 
-            return view('fa.contactus')->with('successMsg','پیام با موفقیت ارسال شد. با تشکر');
+            return view('fa.contactus')->with('successMsg', 'پیام با موفقیت ارسال شد. با تشکر');
         }
 
         return view('fa.contactus');
@@ -116,31 +116,31 @@ class HomeController extends Controller
     public function search(Request $request)
     {
         $txtsearch = $request->q;
-        $news = News::where('status','active')
-            ->where(function ($q) use($txtsearch){
+        $news = News::where('status', 'active')
+            ->where(function ($q) use ($txtsearch) {
                 return $q->where('title', 'like', '%' . $txtsearch . '%')
                     ->orWhere('descr', 'like', '%' . $txtsearch . '%')
-                    ->orWhere('full_text', 'like', '%' . $txtsearch . '%')
-                ;
+                    ->orWhere('full_text', 'like', '%' . $txtsearch . '%');
             })
             ->orderBy('created_at', 'desc')
             ->paginate(500);
-            #->paginate($this->take);
-        $text = 'کلمه ی جستجویی شما : ' . $txtsearch ;
+        #->paginate($this->take);
+        $text = 'کلمه ی جستجویی شما : ' . $txtsearch;
         return view(\App::getLocale() . '.news_search_list', compact('news', 'text'));
     }
 
     public function archive(Request $request)
     {
-        $news = News::select(['created_at','created_at_fa'])->groupBy(\DB::raw('YEAR(created_at_fa)'))
-        ->orderBy('created_at_fa','asc')
-        #->toSql();
-        ->paginate($this->take);
+        $news = News::select(['created_at', 'created_at_fa'])->groupBy(\DB::raw('YEAR(created_at_fa)'))
+            ->orderBy('created_at_fa', 'asc')
+            #->toSql();
+            ->paginate($this->take);
         #dd($news);
 
-        $text = 'آرشیو سالانه تمام مطالب سایت ' ;
+        $text = 'آرشیو سالانه تمام مطالب سایت ';
         return view(\App::getLocale() . '.news_archive', compact('news', 'text'));
     }
+
     public function archive_month(Request $request)
     {
         $month_name = $request->month;
@@ -185,12 +185,12 @@ class HomeController extends Controller
                 break;
         }*/
 
-        $news = News::where('status','active')
-            ->whereYear('created_at_fa',$request->month)
+        $news = News::where('status', 'active')
+            ->whereYear('created_at_fa', $request->month)
             ->orderBy('created_at_fa', 'desc')
             #->get();
             ->paginate(1000000000);
-        $text = 'آرشیو تمام مطالب  سال' . $month_name ;
+        $text = 'آرشیو تمام مطالب  سال' . $month_name;
         return view(\App::getLocale() . '.news_search_list', compact('news', 'text'));
     }
 
@@ -206,84 +206,88 @@ class HomeController extends Controller
         return redirect(route('profile.index'));
     }
 
-    public function render_files($filename) {
+    public function render_files($filename)
+    {
         // open the file in a binary mode
         $name = 'http://ketabnews.com/files/' . $filename;
         $fp = fopen($name, 'rb');
-        
+
         // send the right headers
         header('Cache-Control: no-cache, no-store, max-age=0, must-revalidate');
         header('Expires: January 01, 2013'); // Date in the past
         header('Pragma: no-cache');
         header("Content-Type: image/jpg");
         /* header("Content-Length: " . filesize($name)); */
-        
-        // dump the picture and stop the script
-        fpassthru($fp);
-        die();
-        exit;
-    }
-    
-    public function render_videoFiles($dir, $filename, $ext) {
-        
-        // open the file in a binary mode
-        $name = "http://ketabnews.com/files/$dir/$filename.$ext";
-        $fp = fopen($name, 'rb');
-        
-        // send the right headers
-        header('Cache-Control: no-cache, no-store, max-age=0, must-revalidate');
-        header('Expires: January 01, 2013'); // Date in the past
-        header('Pragma: no-cache');
-        header("Content-Type: video/$ext");
-        /* header("Content-Length: " . filesize($name)); */
-        
-        // dump the picture and stop the script
-        fpassthru($fp);
-        die();
-        exit;
-    }
-    
-    public function render_images($filename) {
-        // open the file in a binary mode
-        $name = 'http://ketabnews.com/images/' . $filename;
-        $fp = fopen($name, 'rb');
-        
-        // send the right headers
-        header('Cache-Control: no-cache, no-store, max-age=0, must-revalidate');
-        header('Expires: January 01, 2013'); // Date in the past
-        header('Pragma: no-cache');
-        header("Content-Type: image/jpg");
-        /* header("Content-Length: " . filesize($name)); */
-        
+
         // dump the picture and stop the script
         fpassthru($fp);
         die();
         exit;
     }
 
-    public function jsonLoadMore($page) {
+    public function render_videoFiles($dir, $filename, $ext)
+    {
+
+        // open the file in a binary mode
+        $name = "http://ketabnews.com/files/$dir/$filename.$ext";
+        $fp = fopen($name, 'rb');
+
+        // send the right headers
+        header('Cache-Control: no-cache, no-store, max-age=0, must-revalidate');
+        header('Expires: January 01, 2013'); // Date in the past
+        header('Pragma: no-cache');
+        header("Content-Type: video/$ext");
+        /* header("Content-Length: " . filesize($name)); */
+
+        // dump the picture and stop the script
+        fpassthru($fp);
+        die();
+        exit;
+    }
+
+    public function render_images($filename)
+    {
+        // open the file in a binary mode
+        $name = 'http://ketabnews.com/images/' . $filename;
+        $fp = fopen($name, 'rb');
+
+        // send the right headers
+        header('Cache-Control: no-cache, no-store, max-age=0, must-revalidate');
+        header('Expires: January 01, 2013'); // Date in the past
+        header('Pragma: no-cache');
+        header("Content-Type: image/jpg");
+        /* header("Content-Length: " . filesize($name)); */
+
+        // dump the picture and stop the script
+        fpassthru($fp);
+        die();
+        exit;
+    }
+
+    public function jsonLoadMore($page)
+    {
         // if (date('s')%2 == 0) {
         //     return;
         // }
         $page = ($page == 0) ? 1 : $page;
         $nowdate = Carbon::now()->toDateTimeString();
         $news_titr2 = News::where('status', 'active')
-        ->where('type', 'titr2')
-        ->where('created_at', '<=' , $nowdate )
-        ->where('lang', \App::getLocale())
-        ->orderBy('created_at', 'desc')
-        ->skip(6*$page)
-        ->take(6)
-        ->get();
+            ->where('type', 'titr2')
+            ->where('created_at', '<=', $nowdate)
+            ->where('lang', \App::getLocale())
+            ->orderBy('created_at', 'desc')
+            ->skip(6 * $page)
+            ->take(6)
+            ->get();
         $row = [
             "content" => '',
             "next" => ''
         ];
-        foreach($news_titr2 as $data) {
+        foreach ($news_titr2 as $data) {
             $title = $data->title;
             $slug = $this->str_slug_fa($data->title);
-            $img_src = $this->image_url($data->image_url , 235,100 ,true);
-            $href = route('news.show', [$data->id , $slug]);
+            $img_src = $this->image_url($data->image_url, 235, 100, true);
+            $href = route('news.show', [$data->id, $slug]);
             $desc = $data->descr;
 
             $row['content'] .= "
@@ -320,7 +324,7 @@ class HomeController extends Controller
                     </div>
                 </div>
                 ";
-                $row['next'] = $page+1;
+            $row['next'] = $page + 1;
         }
         // return response()->json($row);
         echo $row['content'];
@@ -330,13 +334,13 @@ class HomeController extends Controller
     {
         // Convert all dashes/underscores into separator
         $flip = $separator == '-' ? '_' : '-';
-        $title = preg_replace('!['.preg_quote($flip).']+!u', $separator, $title);
+        $title = preg_replace('![' . preg_quote($flip) . ']+!u', $separator, $title);
 
         // Remove all characters that are not the separator, letters, numbers, or whitespace.
-        $title = preg_replace('![^'.preg_quote($separator).'\pL\pN\s]+!u', '', mb_strtolower($title));
+        $title = preg_replace('![^' . preg_quote($separator) . '\pL\pN\s]+!u', '', mb_strtolower($title));
 
         // Replace all separator characters and whitespace by a single separator
-        $title = preg_replace('!['.preg_quote($separator).'\s]+!u', $separator, $title);
+        $title = preg_replace('![' . preg_quote($separator) . '\s]+!u', $separator, $title);
 
         return trim($title, $separator);
     }
@@ -346,8 +350,7 @@ class HomeController extends Controller
     {
         $info = pathinfo($file);#dd($info);
 
-        if (count($info) == 4)
-        {
+        if (count($info) == 4) {
             if (substr($info['dirname'], 0, 6) == 'files/') {
                 $info['dirname'] = substr($info['dirname'], 6);
             }

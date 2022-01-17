@@ -174,7 +174,7 @@
                     <div id="" class="row">
 
                         <div id="load_more"
-                            class="newsContainer newsListWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                             class="newsContainer newsListWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
                             @if (isset($news_titr2))
                                 @foreach($news_titr2 as $nt2)

@@ -30,7 +30,7 @@ class TagController extends Controller
             $news_titr3 = $tag->news()->where('status', 'active')->where('type', 'titr3')->where('news.created_at', '<=', $nowdate)->where('lang', \App::getLocale())->orderBy('created_at', 'desc')->take(50)->get();
         else
             $news_titr3 = $tag->news()->where('status', 'active')->where('type', 'titr3')->where('news.created_at', '<=', $nowdate)->where('lang', \App::getLocale())->orderBy('created_at', 'desc')->get();
-
+        
         return view(\App::getLocale() . '.home_tag', compact('tag', 'news_titr1', 'news_titr2', 'news_titr3'));
     }
 
@@ -38,11 +38,12 @@ class TagController extends Controller
         // if (date('s')%2 == 0) {
         //     return;
         // }
+        $tag = Tag::findOrFail($id);
         $page = ($page == 0) ? 1 : $page;
         $nowdate = Carbon::now()->toDateTimeString();
-        $news_titr2 = News::where('status', 'active')
+        $news_titr2 = $tag->news()->where('status', 'active')
         ->where('type', 'titr2')
-        ->where('created_at', '<=' , $nowdate )
+        ->where('news.created_at', '<=', $nowdate)
         ->where('lang', \App::getLocale())
         ->orderBy('created_at', 'desc')
         ->skip(6*$page)

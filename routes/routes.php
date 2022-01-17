@@ -17,8 +17,8 @@ Route::get('rand', function() {
     return $random_data[0];
 });
 
-Route::get('json/{page}', ['uses' => 'HomeController@jsonLoadMore', 'as' => 'json']);
-
+#### Json Home Content ####
+Route::get('json/home/{page}', ['uses' => 'HomeController@jsonLoadMore', 'as' => 'json']);
 
 Route::get('images{image}{type}{width}x{height}.{ext}', ['uses' => 'FileController@create'])->where(['image' => '(/[a-zA-Z0-9_\-\.]+)+', 'type' => '_|-', 'width' => '[0-9]+', 'height' => '[0-9]+', 'ext' => 'jpe?g|png|gif|JPG']);
 
@@ -209,6 +209,9 @@ Route::group(['prefix' => 'news', 'as' => 'news.', 'namespace' => 'News'], funct
 Route::group(['prefix' => 'tags', 'as' => 'tag.', 'namespace' => 'Tag'], function () {
     Route::get('/', ['uses' => 'TagController@items', 'as' => 'list']);
     Route::get('{id}/{title}', ['uses' => 'TagController@show', 'as' => 'show']);
+
+    #### Json Tag Content ####
+    Route::get('{id}/json/{page}', ['uses' => 'TagController@jsonLoadMore', 'as' => 'show'])->name('tag.json');
 //    Route::get('{id}/{title}', ['uses' => 'TagController@shoarchivew', 'as' => 'show']);
 });
 

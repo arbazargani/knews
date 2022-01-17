@@ -173,7 +173,8 @@
 
                     <div id="" class="row">
 
-                        <div id="" class="newsContainer newsListWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div id="load_more"
+                            class="newsContainer newsListWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
                             @if (isset($news_titr2))
                                 @foreach($news_titr2 as $nt2)
@@ -181,26 +182,14 @@
                                 @endforeach
                             @endif
 
-
-                            {{--@if (isset($news_titr2[0]))--}}
-                                {{--@include('fa.partial.one_news' , ['data'=> $news_titr2[0] ])--}}
-                            {{--@endif--}}
-
-                            {{--@if (isset($news_titr2[1]))--}}
-                                {{--@include('fa.partial.one_news' , ['data'=> $news_titr2[1] ])--}}
-                            {{--@endif--}}
-
-                            {{--@if (isset($news_titr2[2]))--}}
-                                    {{--@if($tag->id != 1)--}}
-                                        {{--@include('fa.partial.one_news' , ['data'=> $news_titr2[2] ])--}}
-                                    {{--@endif--}}
-                            {{--@endif--}}
-
+                            <div id="results"></div>
+                            <div class="ajax-loading">در حال بارگزاری ...</div>
                         </div>
 
                     </div>
 
                 </div>
+                <div id="loader" class="loader"></div>
             </div>
             <div id="ctl00_cphBeforeMiddleRight_pnl21cphBeforeMiddleRight_137"
                  class="col-cms col-lg-6 col-md-6 customNewsList titleCount">

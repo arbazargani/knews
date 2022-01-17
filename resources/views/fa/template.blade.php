@@ -128,6 +128,10 @@
 </div>
 <div class="goToTop"></div>
 </body>
+<script>
+    $('.ajax-loading').hide();
+</script>
+@if(\Request::route()->getName() == 'tag.show')
 <!-- <script>
     !function(n){var a={url:null,autoload:!0,data:{page:1,size:10},before:function(){n(this.loading).fadeIn()},after:function(a){n(this.loading).fadeOut(),n(a).fadeInWithDelay()},scroller:n(window),heightOffset:20,loading:"#loading",loadingText:"Wait a moment... it's loading!",loadingNomoreText:"No more.",manuallyText:"click to loading more."};n.fn.scrollPagination=function(t){var o=n.extend(a,t);o.scroller;return this.each(function(){n.fn.scrollPagination.init(n(this),o)})},n.fn.stopScrollPagination=function(a=null,t=null){if(null==a)return this.each(function(){n(this).attr("scrollPagination","disabled")});n(t.loading).text(t.loadingNomoreText).fadeIn(),n(a).attr("scrollPagination","disabled")},n.fn.scrollPagination.loadContent=function(a,t){t.scroller;null!=t.before&&t.before(),n(a).children().attr("rel","loaded"),n.ajax({type:"POST",url:t.url,data:t.data,dataType:"json",success:function(o){var l="";null!=o.content&&(n(t.loading).text(t.loadingText),n.each(o.content,function(n,a){l+="<li style='opacity:0;-moz-opacity: 0;filter: alpha(opacity=0);'><p>"+a+"</p></li>",dataCount=parseInt(n)+1}),n(a).append(l),dataCount<t.data.size?t.data.page++:n.fn.stopScrollPagination(a,t));var i=n(a).children("[rel!=loaded]");null!=t.after&&t.after(i)}})},n.fn.scrollPagination.init=function(a,t){var o=t.scroller;n(a).attr("scrollPagination","enabled"),0===n(a).children().length&&n.fn.scrollPagination.loadContent(a,t),!0===t.autoload?n(o).scroll(function(l){"enabled"==n(a).attr("scrollPagination")?Math.ceil(n(o).scrollTop())+t.heightOffset>=n(document).height()-n(o).height()&&n.fn.scrollPagination.loadContent(a,t):l.stopPropagation(a,t)}):(t.loadingText=t.manuallyText,n(t.loading).text(t.loadingText).fadeIn().on("click",function(o){"enabled"==n(a).attr("scrollPagination")?n.fn.scrollPagination.loadContent(a,t):o.stopPropagation(a,t)}))},n.fn.fadeInWithDelay=function(){var a=0;return this.each(function(){n(this).delay(a).animate({opacity:1},200),a+=100})}}(jQuery);
     var page = 1;
@@ -184,14 +188,16 @@
     };
 
 
-   var SITEURL = "/json/";
-   var page = 0; //track user scroll as page number, right now page number is 1
-//    load_more(page); //initial content load
-   $(window).scroll(function() { //detect page scroll
+    @if(\Request::route()->getName() == 'tag.show')
+    var SITEURL = "/tags/{{$tag->id}}/json/";
+    @else
+    var SITEURL = "/json/home/";
+    @endif
+   var page = 0;
+   $(window).scroll(function() {
       if($(window).scrollTop() + $(window).height() >= $(document).height() || $('#loader').isOnScreen()) { //if user scrolled from top to bottom of the page
-    //   if( $('#loader').isOnScreen()) { //if user scrolled from top to bottom of the page
-        page++; //page number increment
-        load_more(page); //load content   
+        page++; 
+        load_more(page);
       }
     });
     function load_more(page) {
@@ -283,4 +289,5 @@
     //         }
     //     });
     // </script>
+    @endif
 </html>

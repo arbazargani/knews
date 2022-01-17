@@ -262,9 +262,9 @@ class HomeController extends Controller
     }
 
     public function jsonLoadMore($page) {
-        if (date('s')%2 == 0) {
-            return;
-        }
+        // if (date('s')%2 == 0) {
+        //     return;
+        // }
         $page = ($page == 0) ? 1 : $page;
         $nowdate = Carbon::now()->toDateTimeString();
         $news_titr2 = News::where('status', 'active')

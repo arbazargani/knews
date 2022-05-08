@@ -364,4 +364,48 @@ class HomeController extends Controller
 
 
     }
+
+    public function AjaxLoadMoreT3($page)
+    {
+        $page = ($page == 0) ? 1 : $page;
+        $nowdate = Carbon::now()->toDateTimeString();
+        $news_titr3 = News::where('status', 'active')
+            ->where('type', 'titr3')
+            ->where('news.created_at', '<=', $nowdate)
+            ->where('lang', \App::getLocale())
+            ->orderBy('created_at', 'desc')
+            ->skip(30 * $page)
+            ->take(30)
+            ->get();
+        $row = [
+            "content" => '',
+            "next" => ''
+        ];
+        foreach ($news_titr3 as $val) {
+            $title = $val->title;
+            $slug = $this->str_slug_fa($val->title);
+            $img_src = $this->image_url($val->image_url, 235, 100, true);
+            $href = route('news.show', [$val->id, $slug]);
+            $desc = $val->descr;
+
+            $row['content'] .= "<div id=''
+                                     class='newsContainer newsListWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+                                    <div class='newsListItem'>
+                                        <div id='' class='newsListTitle'>
+
+                                            <h3>
+                                                <a id=''
+                                                   title='$title'
+                                                   href='$href'
+                                                   target='_parent'>$title</a>
+                                            </h3>
+
+                                        </div>
+                                    </div>
+                                </div>";
+            $row['next'] = $page + 1;
+        }
+        // return response()->json($row);
+        echo $row['content'];
+    }
 }

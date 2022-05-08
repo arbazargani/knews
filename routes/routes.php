@@ -215,6 +215,9 @@ Route::group(['prefix' => 'tags', 'as' => 'tag.', 'namespace' => 'Tag'], functio
 //    Route::get('{id}/{title}', ['uses' => 'TagController@shoarchivew', 'as' => 'show']);
 });
 
+### Ajax Routes ###
+Route::get('json/titr3/{page}', ['uses' => 'HomeController@AjaxLoadMoreT3', 'as' => 'titr3.json']);
+
 
 
 Route::get('about-us', 'HomeController@aboutus')->name('aboutus');

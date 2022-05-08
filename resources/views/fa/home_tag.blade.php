@@ -214,6 +214,9 @@
                                     </div>
                                 </div>
                             @endforeach
+                            <div id="t3_results"></div>
+                            <div class="t3_ajax-loading">در حال بارگزاری ...</div>
+                            <div id="t3_loader" class="loader"></div>
                         @endif
                         <div class="col-md-12">
 

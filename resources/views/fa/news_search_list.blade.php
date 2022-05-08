@@ -44,6 +44,9 @@
                                                     </div>
                                                 </div>
                                             @endforeach
+                                            <div id="archive_results"></div>
+                                            <div class="archive_ajax-loading">در حال بارگزاری ...</div>
+                                            <div id="archive_loader" class="loader"></div>
                                         </div>
                                         <!--
 										<div id="" class="row">

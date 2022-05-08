@@ -144,6 +144,7 @@ class HomeController extends Controller
     public function archive_month(Request $request)
     {
         $month_name = $request->month;
+        $month = $request->month;
 
         /*$month_name = 'فروردین' ;
         switch ($request->month) {
@@ -188,10 +189,11 @@ class HomeController extends Controller
         $news = News::where('status', 'active')
             ->whereYear('created_at_fa', $request->month)
             ->orderBy('created_at_fa', 'desc')
+            ->take(20)
             #->get();
-            ->paginate(1000000000);
+            ->paginate(100);
         $text = 'آرشیو تمام مطالب  سال' . $month_name;
-        return view(\App::getLocale() . '.news_search_list', compact('news', 'text'));
+        return view(\App::getLocale() . '.news_search_list', compact('news', 'text', 'month'));
     }
 
     public function newsletter(Request $request)
@@ -403,6 +405,41 @@ class HomeController extends Controller
                                         </div>
                                     </div>
                                 </div>";
+            $row['next'] = $page + 1;
+        }
+        // return response()->json($row);
+        echo $row['content'];
+    }
+
+    public function AjaxLoadMoreArchive($year, $page) {
+        $news = News::where('status', 'active')
+            ->whereYear('created_at_fa', $year)
+            ->orderBy('created_at_fa', 'desc')
+            ->skip(20 * $page)
+            ->take(20)
+            ->get();
+        $row = [
+            "content" => '',
+            "next" => ''
+        ];
+        foreach ($news as $val) {
+            $title = $val->title;
+            $slug = $this->str_slug_fa($val->title);
+            $img_src = $this->image_url($val->image_url, 235, 100, true);
+            $href = route('news.show', [$val->id, $slug]);
+            $desc = $val->descr;
+            $row['content'] .= "<div class='newsContainer newsListWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+                                                    <div class='newsListItem'>
+                                                        <div id='' class='newsListTitle'>
+                                                            <h3>
+                                                                <a id=''
+                                                                   title='$title'
+                                                                   href='$href'
+                                                                   target='_parent'>$title</a>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>";
             $row['next'] = $page + 1;
         }
         // return response()->json($row);

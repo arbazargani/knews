@@ -31,7 +31,7 @@ class TagController extends Controller
         else
             $news_titr3 = $tag->news()->where('status', 'active')->where('type', 'titr3')->where('news.created_at', '<=', $nowdate)->where('lang', \App::getLocale())->orderBy('created_at', 'desc')->take(30)->get();
 
-        return view(\App::getLocale() . '.home_tag', compact('tag', 'news_titr1', 'news_titr2', 'news_titr3'));
+        return view(\App::getLocale() . '.home_tag', compact('tag','news_titr1', 'news_titr2', 'news_titr3'));
     }
 
     public function jsonLoadMore($id, $page)

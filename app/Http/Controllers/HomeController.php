@@ -8,6 +8,7 @@ use App\News;
 use App\Newsletter;
 use App\Product;
 use App\StaticPage;
+use App\Tag;
 use App\User;
 use App\UserCompany;
 use Carbon\Carbon;
@@ -367,11 +368,12 @@ class HomeController extends Controller
 
     }
 
-    public function AjaxLoadMoreT3($page)
+    public function AjaxLoadMoreT3($tag_id, $page)
     {
         $page = ($page == 0) ? 1 : $page;
+        $tag = Tag::findOrFail($tag_id);
         $nowdate = Carbon::now()->toDateTimeString();
-        $news_titr3 = News::where('status', 'active')
+        $news_titr3 = $tag->news()->where('status', 'active')
             ->where('type', 'titr3')
             ->where('news.created_at', '<=', $nowdate)
             ->where('lang', \App::getLocale())
